@@ -103,7 +103,7 @@ footer{
     <main>
         <div class="weather-app-data">
       <div>
-        <h1 class="weather-app-city" id="city">Florence </h1>
+        <h1 class="weather-app-city" id="city"> </h1>
         <p class="weather-app-details">
           Tuesday 14:49, scattered clouds
           <br />
@@ -111,7 +111,7 @@ footer{
         </p>
       </div>
       <div class="weather-app-temperature-container">
-        <div class="weather-app-icon">⛅</div> <div class="weather-app-temperature"> 12</div><div class="weather-app-unit">℃</div>
+        <div class="weather-app-icon">⛅</div> <div class="weather-app-temperature" id="temperature"> </div><div class="weather-app-unit">℃</div>
     </div>
     </main>
     <footer>
@@ -130,14 +130,30 @@ footer{
     </footer>
 </div>
 <script>
+function refreshWeather(response){
+  let temperatureElement = document.querySelector("#temperature");
+  let temperature = response.data.temperature.current;
+  temperatureElement.innerHTML = Math.round(temperature);
+let cityElement = document.querySelector("#city");
+        cityElement.innerHTML = response.data.city;
+}
+
+function searchCity(city){
+let apiKey = "a1fed479b3o4b9a48ctccd8c028062eb";
+let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`
+axios.get(apiUrl).then(refreshWeather);
+}
+
     function handleSearchSubmit (event){
         event.preventDefault();
         let searchInput = document.querySelector("#search-form-input");
-        let cityElement = document.querySelector("#city");
-        cityElement.innerHTML = searchInput.value;
+        
+        searchCity(searchInput.value);
     }
     let searchFormElement = document.querySelector("#search-form");
     searchFormElement.addEventListener("submit", handleSearchSubmit);
+
+    searchCity("Paris");
     
 
     
